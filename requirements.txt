@@ -1,0 +1,16 @@
+langchain
+langchain-openai
+fastapi
+uvicorn
+pypdf
+psycopg2-binary
+pgvector
+streamlit
+python-dotenv
+wikipedia
+requests
+redis
+python-jose[cryptography]
+passlib[bcrypt]
+pymongo
+python-multipart 
