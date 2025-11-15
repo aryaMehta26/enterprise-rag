@@ -1,0 +1,33 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+      - name: Install deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Static check imports
+        run: |
+          python - <<'PY'
+          import importlib
+          for pkg in [
+              'fastapi','uvicorn','psycopg2','pgvector','redis','pymongo','langchain_openai','dotenv'
+          ]:
+              importlib.import_module(pkg)
+          print('Imports OK')
+          PY
+      - name: Build Docker image
+        run: docker build -t enterprise-rag:ci .
